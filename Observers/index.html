@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        label{display: flex; flex-direction: column; margin-bottom: 10px;}
+        label span{padding: 10px 0; font-weight: bold;}
+
+        .container{width:100%; display: flex; justify-content: center;}
+        .content{width: 80%; max-width: 1240px;}
+
+        .show_texts{display: flex; flex-direction: column;}
+        .show_text{display: flex; align-items: center; font-size: 0.75em; text-transform: uppercase; padding: 10px 0;}
+        .show_text strong{padding-right: 10px;}
+        .show_text span{padding: 0;}
+
+        .flex-fill{flex: 1 1 auto;}
+        .flex{display: flex; align-items: center;}
+        .justify-content-between{justify-content: space-between;}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="content">
+
+            <label>
+                <span>Digite algo aqui:</span>
+                <input type="text" placeholder="" value="" class="jsInput"/>                
+            </label>
+
+            <div class="show_texts">      
+                <div class="show_text">
+                    <strong>Imprimir: </strong>
+                    <div class="flex-fill flex justify-content-between">
+                        <span class="jsText1"></span>
+                        <button class="jsUnsubscribe1">Unsubscribe</button>
+                    </div>
+                </div>  
+
+                <div class="show_text">
+                    <strong>Imprimir: </strong>
+                    <div class="flex-fill flex justify-content-between">
+                        <span class="jsText2"></span>
+                        <button class="jsUnsubscribe2">Unsubscribe</button>
+                    </div>
+                </div>
+
+                <div class="show_text">
+                    <strong>Imprimir: </strong>
+                    <div class="flex-fill flex justify-content-between">
+                        <span class="jsText3"></span>
+                        <button class="jsUnsubscribe3">Unsubscribe</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="Observer.js"></script>
+    <script>
+
+        // ELEMENTS :: elementos DOM
+        const input = document.querySelector('.jsInput');
+        const unsubscribe1 = document.querySelector('.jsUnsubscribe1')
+        const unsubscribe2 = document.querySelector('.jsUnsubscribe2')
+        const unsubscribe3 = document.querySelector('.jsUnsubscribe3')
+
+        // FUNCTIONS/ACTIONS :: ações para adicionar ao array de observadores
+        const fnText1 = text => document.querySelector('.jsText1').textContent = text
+        const fnText2 = text => document.querySelector('.jsText2').textContent = text
+        const fnText3 = text => document.querySelector('.jsText3').textContent = text
+
+        // INSTANCE :: instanciar classe Observer
+        const observer = new Observer();
+
+        // SUBSCRIBE :: registrar observadores
+        observer.subscribe(fnText1)
+        observer.subscribe(fnText2)
+        observer.subscribe(fnText3)
+
+        // UNSUBSCRIBE :: Remover ações do observer
+        unsubscribe1.addEventListener('click', () => observer.unsubscribe(fnText1))
+        unsubscribe2.addEventListener('click', () => observer.unsubscribe(fnText2))
+        unsubscribe3.addEventListener('click', () => observer.unsubscribe(fnText3))
+
+        // NOTIFY :: notificando todos os observadores sobre novos dados, acionando por evento selecionado
+        input.addEventListener('keyup', event => {
+            observer.notify({ payload: event.target.value })
+        })
+
+    </script>
+</body>
+</html>
